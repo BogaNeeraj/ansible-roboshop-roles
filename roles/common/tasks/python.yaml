@@ -1,8 +1,8 @@
 - name: install python3 packages
   ansible.builtin.dnf:
     name: "{{ item }}"
-    state: forcereinstall
-    
+    state: latest
+
   loop:
   - python3 
   - gcc 
