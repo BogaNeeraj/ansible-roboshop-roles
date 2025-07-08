@@ -2,6 +2,7 @@
   ansible.builtin.pip:
     name: "{{ item }}"
     state: forcereinstall
+    executable: pip3.9
   loop:
   - python3 
   - gcc 
