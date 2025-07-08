@@ -1,0 +1,5 @@
+CART_HOST: cart.neeraj.sbs
+USER_HOST: user.neeraj.sbs
+RABBITMQ_HOST: rabbitmq.neeraj.sbs
+RABBITMQ_USER: roboshop
+RABBITMQ_PASSWORD: roboshop123

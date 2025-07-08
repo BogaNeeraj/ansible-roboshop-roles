@@ -1,0 +1,24 @@
+
+- name: create roboshop user
+  ansible.builtin.user: #Ansible user module
+    name: roboshop
+    shell: /sbin/nologin
+    system: true
+    home: /app
+
+- name: create directory
+  ansible.builtin.file: #Ansible file module
+    path: /app
+    state: directory
+
+- name: download the {{ component }} code
+  ansible.builtin.get_url:  #Ansible get url module
+    url: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip"
+    dest: "/tmp/{{ component }}.zip"
+# this module thinks file exist on ansible control server, needs to extract on to remote machine
+# remote_src: yes means files already exist in catalogue server
+- name: extract the {{ component }} code
+  ansible.builtin.unarchive: #Ansible unzip module
+    src: "/tmp/{{ component }}.zip"
+    dest: /app
+    remote_src: yes #Because the file is already available in remote server 

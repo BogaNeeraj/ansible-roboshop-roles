@@ -1,0 +1,5 @@
+CATALOGUE_HOST: catalogue.neeraj.sbs
+USER_HOST: user.neeraj.sbs
+CART_HOST: cart.neeraj.sbs
+SHIPPING_HOST: shipping.neeraj.sbs
+PAYMENT_HOST: payment.neeraj.sbs

@@ -1,0 +1,40 @@
+# - name: disable the old nodejs and enable to the nodejs
+#   ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:20 -y
+#   #Shell and command module, shell with login to target server to run 
+
+- name: app setup
+  include_role:
+   name: common
+   tasks_from: app-setup
+
+- name: nodejs setup
+  include_role:
+   name: common
+   tasks_from: nodejs
+
+- name: copy the mongodb repo file
+  ansible.builtin.copy: #Search ansible copy module in google to find the modules
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: install mongodb client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: present
+
+- name: get the catalogue count  #if the count is 0 i.e, no data in catalogue server
+  ansible.builtin.command: mongosh --host mongodb.neeraj.sbs --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: catalogue_count
+
+- name: print the count
+  ansible.builtin.debug:
+    msg: "catalogue count is : {{ catalogue_count }} "
+
+- name: load products
+  ansible.builtin.command: mongosh --host mongodb.neeraj.sbs < /app/db/master-data.js
+  when: catalogue_count.stdout | int < 0
+
+- name: systemd setup
+  include_role:
+   name: common
+   tasks_from: systemd
